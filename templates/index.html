@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Индекс потребительских цен</title>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.4.0.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.4.0.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.4.0.min.js"></script>
+    {{ script | safe }}
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            font-weight: normal;
+            border: 1px solid black;
+            text-align: center;
+        }
+        h1 {
+            font-size: 30px; 
+        }
+        h2 {
+            font-size: 16px;
+        }
+        h3 {
+            font-size: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Индекс потребительских цен (ИПЦ)</h1>
+	<p>Нажмите кнопку, чтобы загрузить данные и пронализироать ИПЦ</p>
+    <form action="/" method="get">
+        <button type="submit" name="show_content" value="true">Проанализироать ИПЦ</button>
+    </form>
+    
+    {% if show_content %}
+        <div>
+            <p>{{ max_value }}</p>
+            <p>{{ min_value }}</p>
+            <p>{{ average }}</p>
+            <p>{{ accuracy }}</p>
+            <h2>Ретроспективный анализ надежности модели. Анализ за предыдущие периоды</h2>
+            <table>
+                {% for row in table_data %}
+                    {% if loop.first %}
+                        <thead>
+                    {% endif %}
+                    <tr>
+                        {% for item in row %}
+                            {% if loop.first %}
+                                <th>{{ item }}</th>
+                            {% else %}
+                                <td>{{ item }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% if loop.last %}
+                        </thead>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            <h3>График индекса потребительских цен с предсказанием</h3>
+            {{ div | safe }}
+        </div>
+    {% endif %}
+</body>
+</html>
